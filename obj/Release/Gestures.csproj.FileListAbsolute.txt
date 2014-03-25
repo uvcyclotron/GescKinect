@@ -1,0 +1,52 @@
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\bin\Release\Resources\sample-mouse.xml
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\bin\Release\Resources\sample-numbers.xml
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\bin\Release\Gestures.exe
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\bin\Release\Gestures.pdb
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\bin\Release\Accord.dll
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\bin\Release\Accord.MachineLearning.dll
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\bin\Release\Accord.Math.dll
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\bin\Release\Accord.Statistics.dll
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\bin\Release\AForge.dll
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\bin\Release\AForge.Math.dll
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\obj\Release\Gestures.csprojResolveAssemblyReference.cache
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\obj\Release\Gestures.Canvas.resources
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\obj\Release\Gestures.MainForm.resources
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\obj\Release\Gestures.Properties.Resources.resources
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\obj\Release\Gestures.csproj.GenerateResource.Cache
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\obj\Release\Gestures.exe
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMM\test-source\obj\Release\Gestures.pdb
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\obj\Release\Gestures.exe
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\obj\Release\Gestures.pdb
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\bin\Release\Resources\sample-mouse.xml
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\bin\Release\Resources\sample-numbers.xml
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\bin\Release\Gestures.exe
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\bin\Release\Gestures.pdb
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\bin\Release\Accord.dll
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\bin\Release\Accord.MachineLearning.dll
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\bin\Release\Accord.Math.dll
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\bin\Release\Accord.Statistics.dll
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\bin\Release\AForge.dll
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\bin\Release\AForge.Math.dll
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\obj\Release\Gestures.csprojResolveAssemblyReference.cache
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\obj\Release\Gestures.Canvas.resources
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\obj\Release\Gestures.MainForm.resources
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\obj\Release\Gestures.Properties.Resources.resources
+C:\Viraj\Extra\Apogee 2014\Gesture To Speech\HMMtest\obj\Release\Gestures.csproj.GenerateResource.Cache
+C:\Users\Utkarsh\Desktop\HMMtest\obj\Release\Gestures.exe
+C:\Users\Utkarsh\Desktop\HMMtest\obj\Release\Gestures.pdb
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Release\Resources\sample-mouse.xml
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Release\Resources\sample-numbers.xml
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Release\Gestures.exe
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Release\Gestures.pdb
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Release\Accord.dll
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Release\Accord.MachineLearning.dll
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Release\Accord.Math.dll
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Release\Accord.Statistics.dll
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Release\Microsoft.Kinect.Toolkit.dll
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Release\AForge.dll
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Release\AForge.Math.dll
+C:\Users\Utkarsh\Desktop\HMMtest\obj\Release\Gestures.csprojResolveAssemblyReference.cache
+C:\Users\Utkarsh\Desktop\HMMtest\obj\Release\Gestures.Canvas.resources
+C:\Users\Utkarsh\Desktop\HMMtest\obj\Release\Gestures.MainForm.resources
+C:\Users\Utkarsh\Desktop\HMMtest\obj\Release\Gestures.Properties.Resources.resources
+C:\Users\Utkarsh\Desktop\HMMtest\obj\Release\Gestures.csproj.GenerateResource.Cache
