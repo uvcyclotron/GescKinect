@@ -16,3 +16,9 @@ C:\Users\Utkarsh\Desktop\HMMtest\obj\Debug\Gestures.csproj.GenerateResource.Cach
 C:\Users\Utkarsh\Desktop\HMMtest\obj\Debug\Gestures.exe
 C:\Users\Utkarsh\Desktop\HMMtest\obj\Debug\Gestures.pdb
 C:\Users\Utkarsh\Desktop\HMMtest\obj\Debug\Gestures.csprojResolveAssemblyReference.cache
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Debug\CCT.NUI.Core.dll
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Debug\CCT.NUI.HandTracking.dll
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Debug\CCT.NUI.KinectSDK.dll
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Debug\CCT.NUI.Visual.dll
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Debug\OpenNI.Net.dll
+C:\Users\Utkarsh\Desktop\HMMtest\bin\Debug\XnVNITE.net.dll

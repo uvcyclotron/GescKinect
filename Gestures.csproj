@@ -91,6 +91,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Externals\Accord.Statistics.dll</HintPath>
     </Reference>
+    <Reference Include="CCT.NUI.Core">
+      <HintPath>..\..\Downloads\Kinect Related\CCT.NUI (20148) (1)\CCT.NUI.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CCT.NUI.HandTracking">
+      <HintPath>..\..\Downloads\Kinect Related\CCT.NUI (20148) (1)\CCT.NUI.HandTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="CCT.NUI.KinectSDK">
+      <HintPath>..\..\Downloads\Kinect Related\CCT.NUI (20148) (1)\CCT.NUI.KinectSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="CCT.NUI.Visual">
+      <HintPath>..\..\Downloads\Kinect Related\CCT.NUI (20148) (1)\CCT.NUI.Visual.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Kinect, Version=1.8.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

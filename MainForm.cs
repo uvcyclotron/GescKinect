@@ -45,6 +45,15 @@ using System.Drawing.Imaging;
 
 using System.Runtime.InteropServices;//for Marshal
 
+//import CCT
+using CCT.NUI.KinectSDK;
+using CCT.NUI.Core;
+using CCT.NUI.HandTracking;
+using CCT.NUI.Visual;
+using CCT.NUI.Core.Clustering;
+using CCT.NUI.Core.Shape;
+using CCT.NUI.Core.Video;
+
 
 namespace Gestures
 {
@@ -70,8 +79,13 @@ namespace Gestures
         //global label strin
         string label;
         bool detectionDone = false;
-
+        //to limit the no of frames being captured in skeletonTracker. currently at FPS/3. (24FPS)
         int frameCount = 0;
+
+        //for CCT func
+        private ClusterDataSourceSettings clusteringSettings = new ClusterDataSourceSettings();
+        private ShapeDataSourceSettings shapeSettings = new ShapeDataSourceSettings();
+        private HandDataSourceSettings handDetectionSettings = new HandDataSourceSettings();
 
         public MainForm()
         {
@@ -131,6 +145,51 @@ namespace Gestures
                 BtnCameraUp.Click += new EventHandler(BtnCameraUpClick);
                 BtnCameraDown.Click += new EventHandler(BtnCameraDownClick);
             }
+
+            #region CCT code
+            //CCT hand tracking code:
+            try
+            {
+                this.clusteringSettings.MaximumDepthThreshold = 2000; //added threshold. as per CCT eg
+                IDataSourceFactory dataSourceFactory = new SDKDataSourceFactory(useNearMode: false); //trying new modded src
+                var handDataSource = new HandDataSource(dataSourceFactory.CreateShapeDataSource(this.clusteringSettings, this.shapeSettings), this.handDetectionSettings);
+                handDataSource.NewDataAvailable += new NewDataHandler<HandCollection>(handDataSource_NewDataAvailable);
+                handDataSource.Start();
+                System.Diagnostics.Debug.WriteLine("hand data src started");
+
+            }
+            catch (ArgumentOutOfRangeException exc)
+            {
+                //Cursor.Current = Cursors.Default;
+                //MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Diagnostics.Debug.WriteLine("===Error using CCT !!=========== " + exc.Message);
+                //return;
+            }
+            #endregion
+
+        }
+
+        void handDataSource_NewDataAvailable(HandCollection data)
+        {
+            for (int index = 0; index < data.Count; index++)
+            {
+                var hand = data.Hands[index];
+                Console.WriteLine(string.Format("Fingers on hand {0}: {1}", index, hand.FingerCount));
+                //HINT : the current contet when running is on a separate thread, need to use begininvoke or a backgroundworker to change the UItext
+
+                //uncomment the following 1 line, and get it working if you can. 
+                //updateHandLabels(data.Count, hand.FingerCount);
+
+                //offloaded to a separate method.
+                //handLabel.Text = "Hands: " + data.Count;
+                //fingerLabel.Text = "Fingers: " + hand.FingerCount;
+            }
+        }
+
+        void updateHandLabels(int hands, int fingers)
+        {
+            handLabel.Text = "Hands: " + hands.ToString();
+            fingerLabel.Text = "Fingers: " + fingers.ToString();
         }
 
         private void SkeletonHandler(object sender, SkeletonFrameReadyEventArgs e)
@@ -820,6 +879,9 @@ namespace Gestures
         //        //ttsout.Speak(s);
         //    }
         //}
+
+       
+
 
     }
 }

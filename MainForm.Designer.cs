@@ -104,6 +104,8 @@
             this.BtnCameraDown = new System.Windows.Forms.Button();
             this.BtnCameraUp = new System.Windows.Forms.Button();
             this.canvas = new Gestures.Canvas();
+            this.handLabel = new System.Windows.Forms.Label();
+            this.fingerLabel = new System.Windows.Forms.Label();
             this.tabSamples.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
@@ -910,11 +912,31 @@
             this.canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseDown);
             this.canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.inputCanvas_MouseUp);
             // 
+            // handLabel
+            // 
+            this.handLabel.AutoSize = true;
+            this.handLabel.Location = new System.Drawing.Point(611, 595);
+            this.handLabel.Name = "handLabel";
+            this.handLabel.Size = new System.Drawing.Size(63, 17);
+            this.handLabel.TabIndex = 42;
+            this.handLabel.Text = "Hands : 0";
+            // 
+            // fingerLabel
+            // 
+            this.fingerLabel.AutoSize = true;
+            this.fingerLabel.Location = new System.Drawing.Point(611, 619);
+            this.fingerLabel.Name = "fingerLabel";
+            this.fingerLabel.Size = new System.Drawing.Size(68, 17);
+            this.fingerLabel.TabIndex = 43;
+            this.fingerLabel.Text = "Fingers : 0";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(896, 642);
+            this.Controls.Add(this.fingerLabel);
+            this.Controls.Add(this.handLabel);
             this.Controls.Add(this.BtnCameraUp);
             this.Controls.Add(this.BtnCameraDown);
             this.Controls.Add(this.kinImage);
@@ -1053,6 +1075,8 @@
         private System.Windows.Forms.PictureBox kinImage;
         private System.Windows.Forms.Button BtnCameraDown;
         private System.Windows.Forms.Button BtnCameraUp;
+        private System.Windows.Forms.Label handLabel;
+        private System.Windows.Forms.Label fingerLabel;
     }
 }
 
