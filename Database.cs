@@ -45,6 +45,7 @@ namespace Gestures
             }
         }
 
+        //adds the GestureData obj and classLabel to database
         public Sequence Add(GestureData[] sequence, string classLabel)
         {
             if (sequence == null || sequence.Length == 0)
@@ -55,11 +56,12 @@ namespace Gestures
 
             int classIndex = Classes.IndexOf(classLabel);
 
+            //create a new obj of Sequence class, to add to the Samples<Sequence> list
             Sequence sample = new Sequence()
             {
-                Classes = Classes,
-                SourcePath = sequence,
-                Output = classIndex
+                Classes = Classes, //all the classes are stored in a list form
+                SourcePath = sequence, //the GestureData obj is added
+                Output = classIndex //the class label (int form)
             };
 
             Samples.Add(sample);

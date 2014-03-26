@@ -43,14 +43,13 @@ using System.Web.UI.DataVisualization.Charting; //for Point3D class
 using System.Collections.Generic; //for List Collection
 using System.Drawing.Imaging;
 
-using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;//for Marshal
+
 
 namespace Gestures
 {
     public partial class MainForm : Form
     {
-
-
         private Database database;
         private HiddenMarkovClassifier<MultivariateNormalDistribution> hmm;
         private HiddenConditionalRandomField<double[]> hcrf;
@@ -60,22 +59,19 @@ namespace Gestures
         Skeleton[] skeletonData;
 
         byte[] pixeldata;
-
-        //PictureBox KinImage = new PictureBox();
-        
-        
-
-        //use a list of class objects
-        //Point3D[] Point3DArray = new Point3D[10]; //need 10 different skeletal points data
+       // SpeechSynthesizer ttsout; //for Speech synth
+        bool ShouldSpeakOut = true;
 
         Boolean flagRecording = false;
         Boolean isGestureOver = false;
         List<GestureData> sequence;
         static List<GestureData> passableSequence;
-        
+
+        //global label strin
+        string label;
+        bool detectionDone = false;
 
         int frameCount = 0;
-
 
         public MainForm()
         {
@@ -87,9 +83,11 @@ namespace Gestures
             gridSamples.DataSource = database.Samples;
 
             openDataDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Resources");
-            sequence= new List<GestureData>();
-            InitKinect();
+            sequence= new List<GestureData>(); //init the GestureData list
+            InitKinect(); //initialize Kinect sensor and its various data streams
+            //ttsout = new SpeechSynthesizer(); //init the speech synth object
             passableSequence = sequence;
+           // SpeakOut("Hello everyone!");
         }
 
         void InitKinect()
@@ -122,11 +120,9 @@ namespace Gestures
                 {
                     this._kinectDevice = null;
                 }
-                
-                
-                System.Diagnostics.Debug.WriteLine("detected:===================="+ _kinectDevice.Status);
+
+                System.Diagnostics.Debug.WriteLine("detected:========="+ _kinectDevice.Status);
                 //button for gesture recording.ADD.
-                //btnRecord.IsAccessible = true;
                 btnRecord.Enabled = true;
                 btnRecord.Click += new EventHandler(btnRecord_Click);
 
@@ -134,20 +130,7 @@ namespace Gestures
                 BtnCameraDown.Enabled = true;
                 BtnCameraUp.Click += new EventHandler(BtnCameraUpClick);
                 BtnCameraDown.Click += new EventHandler(BtnCameraDownClick);
-
-
             }
-            //catch (InvalidOperationException ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
-            //catch (ArgumentOutOfRangeException e)
-            //{
-            //    btnRecord.Enabled = false;
-            //    MessageBox.Show("No Kinect detected. Please connect a Kinect Sensor and retry.");
-
-            //}
-
         }
 
         private void SkeletonHandler(object sender, SkeletonFrameReadyEventArgs e)
@@ -303,9 +286,6 @@ namespace Gestures
 
         private void btnRecord_Click(object sender, EventArgs e) //this is a gesture recording toggle button.
         {
-            //add this later if(!isGestureOver)
-           
-
             if (flagRecording) //current recording, stopping now
             {
                 
@@ -323,9 +303,7 @@ namespace Gestures
                 canvas_GestureBegin();
                 btnRecord.Text = "Stop Recording!"; //button toggled, can be used to stop recording
                 btnRecord.ForeColor = Color.Red; //visual indication.
-
             }
-           
         }
 
 
@@ -362,7 +340,7 @@ namespace Gestures
             }
  
         }
- 
+        
 
         //void ColorImageFrameReady(object sender, ColorImageFrameReadyEventArgs e)
         //{
@@ -586,6 +564,7 @@ namespace Gestures
         private void btnYes_Click(object sender, EventArgs e)
         {
             //addGesture();
+            detectionDone = true; //modified
             add3DGesture();
             panelClassification.Visible = false;//hide after confirmation
         }
@@ -635,13 +614,23 @@ namespace Gestures
         //    }
         //}
 
-        //add 3D gesture event based on addGEsture
+        //add 3D gesture event (based on addGEsture) to database, adds the sequence(list of GestureData objects) and classLabel
+        
         private void add3DGesture()
         {
             //get Text Lable for the performed gesture
             string selectedItem = cbClasses.SelectedItem as String;
-            string classLabel = String.IsNullOrEmpty(selectedItem) ?
-                cbClasses.Text : selectedItem;
+            string classLabel;
+            if (detectionDone)
+            {
+                classLabel = label; //from global label (detected)
+                detectionDone = false;
+            }
+            else
+            {
+                classLabel = String.IsNullOrEmpty(selectedItem) ?
+                    cbClasses.Text : selectedItem;
+            }
             //add labelled gesture to database 
            // canvas.setSequence();
             if (database.Add(Get3DSequence(), classLabel) != null) //!modify! canvas.get3Dsequnce
@@ -657,12 +646,9 @@ namespace Gestures
 
             System.Diagnostics.Debug.WriteLine("Sequence complete");
 
-            //if (canvas.drawnFlag) //wont work. tthis wont wait till the flag is true.
-            //{
+                //clear the sequence list, so it may be ready to receive data for next gesture
                 sequence.Clear(); // = new List<GestureData>(); //!added. check 
-                //canvas.Clear();
-              //  canvas.drawnFlag = false;
-            //}
+           
         }
 
         
@@ -702,13 +688,14 @@ namespace Gestures
             lbIdle.Visible = false;
         }
 
-        //Gesture events based on Canvas events
+        //Gesture events based on Canvas events, modded for 3D space-time gestures
         private void inputCanvas_GestureDone()
         {
             double[][] input = Sequence.Preprocess(Get3DSequence());
 
             if (input.Length < 5) //length of input, might incr this because now gestures not screen drawing.
             {
+                System.Diagnostics.Debug.WriteLine("----input gesture was too short---!");
                 panelUserLabeling.Visible = false;
                 panelClassification.Visible = false;
                 return;
@@ -725,10 +712,13 @@ namespace Gestures
                 int index = (hcrf != null) ?
                     hcrf.Compute(input) : hmm.Compute(input); //check if input is well formed from sequence preprocessing, only xy breakpoint
 
-                string label = database.Classes[index];
+                label = database.Classes[index]; //modified
                 lbHaveYouDrawn.Text = String.Format("Have you drawn a {0}?", label);
+                //SpeakOut(label); //speak the label
+                
                 panelClassification.Visible = true;
                 panelUserLabeling.Visible = false;
+
             }
         }
 
@@ -816,6 +806,20 @@ namespace Gestures
             return passableSequence;
         }
 
-       
+        
+        //private void SpeakOut(String s)
+        //{
+        //    //Speech TTS demo
+        //    //if(null != ttsout)
+        //    //ttsout.Dispose();
+        //    if (ShouldSpeakOut && null != s)
+        //    {
+        //        System.Diagnostics.Debug.WriteLine("Speaking things~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        //        ttsout = new SpeechSynthesizer();
+        //        ttsout.SpeakAsync(s);
+        //        //ttsout.Speak(s);
+        //    }
+        //}
+
     }
 }

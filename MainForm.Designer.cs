@@ -101,9 +101,9 @@
             this.btnLearnHCRF = new System.Windows.Forms.Button();
             this.btnRecord = new System.Windows.Forms.Button();
             this.kinImage = new System.Windows.Forms.PictureBox();
-            this.canvas = new Gestures.Canvas();
             this.BtnCameraDown = new System.Windows.Forms.Button();
             this.BtnCameraUp = new System.Windows.Forms.Button();
+            this.canvas = new Gestures.Canvas();
             this.tabSamples.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
@@ -871,19 +871,6 @@
             this.kinImage.TabIndex = 38;
             this.kinImage.TabStop = false;
             // 
-            // canvas
-            // 
-            this.canvas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.canvas.BackColor = System.Drawing.Color.White;
-            this.canvas.Location = new System.Drawing.Point(12, 12);
-            this.canvas.MinimumSize = new System.Drawing.Size(128, 128);
-            this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(516, 577);
-            this.canvas.TabIndex = 19;
-            this.canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseDown);
-            this.canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.inputCanvas_MouseUp);
-            // 
             // BtnCameraDown
             // 
             this.BtnCameraDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -909,6 +896,19 @@
             this.BtnCameraUp.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.BtnCameraUp.UseCompatibleTextRendering = true;
             this.BtnCameraUp.UseVisualStyleBackColor = true;
+            // 
+            // canvas
+            // 
+            this.canvas.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.canvas.BackColor = System.Drawing.Color.White;
+            this.canvas.Location = new System.Drawing.Point(12, 12);
+            this.canvas.MinimumSize = new System.Drawing.Size(128, 128);
+            this.canvas.Name = "canvas";
+            this.canvas.Size = new System.Drawing.Size(516, 571);
+            this.canvas.TabIndex = 19;
+            this.canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseDown);
+            this.canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.inputCanvas_MouseUp);
             // 
             // MainForm
             // 

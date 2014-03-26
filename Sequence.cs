@@ -76,8 +76,8 @@ namespace Gestures
             double[][] result = new double[sequence.Length][];
             for (int i = 0; i < sequence.Length; i++)
                 //using hand right x,y; hand left x,y; elbow right x,y; elbow left x,y; wrist right x,y; wrist left x,y
-                result[i] = new double[] { sequence[i].HandR.X, sequence[i].HandR.Y, sequence[i].HandL.X, sequence[i].HandL.Y, sequence[i].ElbowL.X, sequence[i].ElbowL.Y, sequence[i].ElbowR.X, sequence[i].ElbowR.Y, sequence[i].WristR.X, sequence[i].WristR.Y, sequence[i].WristL.X, sequence[i].WristL.Y }; //using only handRight for now to paint gesture, using ONLY X,Y TO TRAIN HMM TOO!! UPDATE
-            //but need to add all, right now only right hand gesture will be trained using accord. !UPDATE!
+                result[i] = new double[] { sequence[i].HandR.X, sequence[i].HandR.Y, sequence[i].HandL.X, sequence[i].HandL.Y, sequence[i].ElbowL.X, sequence[i].ElbowL.Y, sequence[i].ElbowR.X, sequence[i].ElbowR.Y, sequence[i].WristR.X, sequence[i].WristR.Y, sequence[i].WristL.X, sequence[i].WristL.Y }; //using only handRight for now to paint gesture
+            
             double[][] zscores = Accord.Statistics.Tools.ZScores(result);
 
             return zscores.Add(10);
