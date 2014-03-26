@@ -173,7 +173,7 @@ namespace Gestures
         void TraceTrackedSkeletonJoints(JointCollection jCollection)
         {
             Point3D shl, shr, elbl, elbr, wrstl, wrstr, handl, handr, spine, head;
-            if (flagRecording)
+            if (flagRecording && frameCount >= 3)
             {
 
                 //add check if jointdata is non null
@@ -272,21 +272,29 @@ namespace Gestures
                 {
                      head = new Point3D(0,0,0);
                 }
-                frameCount++;
+                //frameCount++;
 
-                if (frameCount == 3)
-                {
+                //this part can be optimised later, put check before object forming
+                //if (frameCount == 3)
+                //{
                     GestureData gd = new GestureData(shl, shr, elbl, elbr, wrstl, wrstr, handl, handr, spine, head);
                     sequence.Add(gd);
-                    System.Diagnostics.Debug.WriteLine("Seq added=====================");
+                    System.Diagnostics.Debug.WriteLine("Seq added===========");
                     frameCount = 0;
+
                 }
+            else if(flagRecording)
+            {
+                frameCount++;
+                System.Diagnostics.Debug.Write("~");
+            }
+
+
 
                 }
 
                 
-                //this.Refresh();
-            }
+          
         
 
 
@@ -432,18 +440,18 @@ namespace Gestures
 
             for (int i = 0; i < inputs.Length; i++)
             {
-                inputs[i] = samples[i].Input;
+                inputs[i] = samples[i].Input; //fine.
                 outputs[i] = samples[i].Output;
             }
 
-            int states = 5;
+            int states = 8;//should change this.
             int iterations = 0;
-            double tolerance = 0.01;
+            double tolerance = 0.01; //reqd to change?
             bool rejection = false;
 
 
             hmm = new HiddenMarkovClassifier<MultivariateNormalDistribution>(classes.Count,
-                new Forward(states), new MultivariateNormalDistribution(2), classes.ToArray());
+                new Forward(states), new MultivariateNormalDistribution(2) , classes.ToArray()); //!UPDATE!, what does 2 stad for?, and forward states?
 
 
             // Create the learning algorithm for the ensemble classifier
@@ -650,6 +658,8 @@ namespace Gestures
 
                 panelUserLabeling.Visible = false;
             }
+
+            System.Diagnostics.Debug.WriteLine("Sequence complete");
         }
 
 
@@ -673,11 +683,9 @@ namespace Gestures
 
             else
             {
-                int index = (hcrf != null) ?
-                    hcrf.Compute(input) : hmm.Compute(input);
-
+                int index = (hcrf != null) ? hcrf.Compute(input) : hmm.Compute(input);
                 string label = database.Classes[index];
-                lbHaveYouDrawn.Text = String.Format("Have you drawn a {0}?", label);
+                lbHaveYouDrawn.Text = String.Format("Have you painted a {0}?", label);
                 panelClassification.Visible = true;
                 panelUserLabeling.Visible = false;
             }
@@ -709,7 +717,7 @@ namespace Gestures
             else
             {
                 int index = (hcrf != null) ?
-                    hcrf.Compute(input) : hmm.Compute(input);
+                    hcrf.Compute(input) : hmm.Compute(input); //check if input is well formed from sequence preprocessing, only xy breakpoint
 
                 string label = database.Classes[index];
                 lbHaveYouDrawn.Text = String.Format("Have you drawn a {0}?", label);
