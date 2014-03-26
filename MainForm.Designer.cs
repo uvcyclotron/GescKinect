@@ -853,6 +853,7 @@
             // 
             this.btnRecord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnRecord.Enabled = false;
+            this.btnRecord.ForeColor = System.Drawing.Color.Black;
             this.btnRecord.Location = new System.Drawing.Point(332, 595);
             this.btnRecord.Name = "btnRecord";
             this.btnRecord.Size = new System.Drawing.Size(152, 40);

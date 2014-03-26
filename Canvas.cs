@@ -36,47 +36,57 @@ namespace Gestures
     public partial class Canvas : UserControl
     {
         private bool capturing;
-        private List<Point> sequence;
-
-
+       private List<GestureData> sequence; ////<Point>
+        public bool drawnFlag = false;
+        
 
         public Canvas()
         {
             InitializeComponent();
 
-            sequence = new List<Point>();
+            //sequence = new List<GestureData>(); //<Point>
+           // this.sequence = MainForm.GetSeq();
+            
             this.DoubleBuffered = true;
         }
 
-        public Point[] GetSequence()
-        {
-            return sequence.ToArray();
-        }
+        //public GestureData[] Get3DSequence() //point[]
+        //{
+        //    return sequence.ToArray();
+        //}
 
+        public void setSequence()
+        {
+            sequence = MainForm.GetSeq();
+            System.Diagnostics.Debug.WriteLine("------------------ Sequence obtained------------------------");
+
+        }
 
         public void Clear()
         {
-            sequence.Clear();
+            //sequence.Clear();
+          //  System.Diagnostics.Debug.WriteLine(" --------------clear-----------------");
             this.Refresh();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
-
+          
             base.OnPaint(e);
 
-            if (!this.DesignMode)
+            if (!this.DesignMode && null !=sequence)
             {
                 if (sequence.Count > 1)
                 {
+                    //  System.Diagnostics.Debug.WriteLine(" --------------draw begins-----------------");
                     for (int i = 1; i < sequence.Count; i++)
                     {
-                        int x = (int)sequence[i].X;
-                        int y = (int)sequence[i].Y;
+                        int x = (int)sequence[i].HandR.X;
+                        int y = (int)sequence[i].HandR.Y;
                         int p = (int)Accord.Math.Tools.Scale(0, sequence.Count, 0, 255, i);
 
-                        int prevX = (int)sequence[i - 1].X;
-                        int prevY = (int)sequence[i - 1].Y;
+                        int prevX = (int)sequence[i - 1].HandR.X;
+                        int prevY = (int)sequence[i - 1].HandR.Y;
                         int prevP = (int)Accord.Math.Tools.Scale(0, sequence.Count, 0, 255, i - 1);
 
                         if (x == prevX && y == prevY)
@@ -95,6 +105,10 @@ namespace Gestures
                             pen.EndCap = LineCap.Round;
 
                             e.Graphics.DrawLine(pen, prevX, prevY, x, y);
+
+                            //change
+                            System.Diagnostics.Debug.WriteLine(" -----!!!!!-draw completed-!!!!!!--------");
+                            drawnFlag = true; //added
                         }
                     }
                 }
@@ -117,19 +131,19 @@ namespace Gestures
             base.OnMouseUp(e);
         }
 
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            if (capturing)
-            {
-                if (e.X > 0 && e.Y > 0)
-                {
-                    sequence.Add(new Point(e.X, e.Y));
-                    this.Refresh();
-                }
-            }
+        //protected override void OnMouseMove(MouseEventArgs e)
+        //{
+        //    if (capturing)
+        //    {
+        //        if (e.X > 0 && e.Y > 0)
+        //        {
+        //            sequence.Add(new Point(e.X, e.Y));
+        //            this.Refresh();
+        //        }
+        //    }
 
-            base.OnMouseMove(e);
-        }
+        //    base.OnMouseMove(e);
+        //}
 
         //protected void TraceTrackedSkeletonsPoints()
         //{

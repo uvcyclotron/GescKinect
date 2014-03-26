@@ -71,6 +71,8 @@ namespace Gestures
         Boolean flagRecording = false;
         Boolean isGestureOver = false;
         List<GestureData> sequence;
+        static List<GestureData> passableSequence;
+        
 
         int frameCount = 0;
 
@@ -87,7 +89,7 @@ namespace Gestures
             openDataDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Resources");
             sequence= new List<GestureData>();
             InitKinect();
-
+            passableSequence = sequence;
         }
 
         void InitKinect()
@@ -274,9 +276,6 @@ namespace Gestures
                 }
                 //frameCount++;
 
-                //this part can be optimised later, put check before object forming
-                //if (frameCount == 3)
-                //{
                     GestureData gd = new GestureData(shl, shr, elbl, elbr, wrstl, wrstr, handl, handr, spine, head);
                     sequence.Add(gd);
                     System.Diagnostics.Debug.WriteLine("Seq added===========");
@@ -288,16 +287,9 @@ namespace Gestures
                 frameCount++;
                 System.Diagnostics.Debug.Write("~");
             }
+      }
 
-
-
-                }
-
-                
-          
         
-
-
         private void EnableNearModeSkeletalTracking()
         {
             if (this._kinectDevice != null && this._kinectDevice.DepthStream != null && this._kinectDevice.SkeletonStream != null)
@@ -320,7 +312,7 @@ namespace Gestures
                 flagRecording = false;//stopeed
                 inputCanvas_GestureDone();
                 btnRecord.Text = "Start Recording!"; //button toggled, can be used to start now
-                
+                btnRecord.ForeColor = Color.Black;
                 //call func to get 3d point data, keep adding points as hand moves
                 //with func recording data if skel is moving and flag is true.
             }
@@ -330,6 +322,7 @@ namespace Gestures
                 flagRecording = true;
                 canvas_GestureBegin();
                 btnRecord.Text = "Stop Recording!"; //button toggled, can be used to stop recording
+                btnRecord.ForeColor = Color.Red; //visual indication.
 
             }
            
@@ -444,14 +437,14 @@ namespace Gestures
                 outputs[i] = samples[i].Output;
             }
 
-            int states = 8;//should change this.
+            int states = 5;//def:5,should change this.
             int iterations = 0;
             double tolerance = 0.01; //reqd to change?
             bool rejection = false;
 
 
             hmm = new HiddenMarkovClassifier<MultivariateNormalDistribution>(classes.Count,
-                new Forward(states), new MultivariateNormalDistribution(2) , classes.ToArray()); //!UPDATE!, what does 2 stad for?, and forward states?
+                new Forward(states), new MultivariateNormalDistribution(12) , classes.ToArray()); //!UPDATE!, no of dimension/features2 stand for?, and forward states?
 
 
             // Create the learning algorithm for the ensemble classifier
@@ -462,6 +455,7 @@ namespace Gestures
                 {
                     Tolerance = tolerance,
                     Iterations = iterations,
+
 
                     FittingOptions = new NormalOptions()
                     {
@@ -593,6 +587,7 @@ namespace Gestures
         {
             //addGesture();
             add3DGesture();
+            panelClassification.Visible = false;//hide after confirmation
         }
 
         private void btnNo_Click(object sender, EventArgs e)
@@ -648,7 +643,8 @@ namespace Gestures
             string classLabel = String.IsNullOrEmpty(selectedItem) ?
                 cbClasses.Text : selectedItem;
             //add labelled gesture to database 
-            if (database.Add(Get3DSequence(), classLabel) != null)
+           // canvas.setSequence();
+            if (database.Add(Get3DSequence(), classLabel) != null) //!modify! canvas.get3Dsequnce
             {
                 canvas.Clear();
 
@@ -660,7 +656,16 @@ namespace Gestures
             }
 
             System.Diagnostics.Debug.WriteLine("Sequence complete");
+
+            //if (canvas.drawnFlag) //wont work. tthis wont wait till the flag is true.
+            //{
+                sequence.Clear(); // = new List<GestureData>(); //!added. check 
+                //canvas.Clear();
+              //  canvas.drawnFlag = false;
+            //}
         }
+
+        
 
 
         // Canvas events - obsolete
@@ -693,6 +698,7 @@ namespace Gestures
 
         private void canvas_MouseDown(object sender, MouseEventArgs e)
         {
+            canvas.Clear();
             lbIdle.Visible = false;
         }
 
@@ -804,5 +810,12 @@ namespace Gestures
             }
         }
 
+
+        public static List<GestureData> GetSeq()
+        {
+            return passableSequence;
+        }
+
+       
     }
 }
