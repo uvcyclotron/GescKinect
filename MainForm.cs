@@ -45,6 +45,8 @@ using System.Drawing.Imaging;
 
 using System.Runtime.InteropServices;//for Marshal
 
+using System.Speech.Synthesis; //for speech.
+
 //import CCT
 using CCT.NUI.KinectSDK;
 using CCT.NUI.Core;
@@ -68,7 +70,7 @@ namespace Gestures
         Skeleton[] skeletonData;
 
         byte[] pixeldata;
-       // SpeechSynthesizer ttsout; //for Speech synth
+        SpeechSynthesizer ttsout; //for Speech synth
         bool ShouldSpeakOut = true;
 
         Boolean flagRecording = false;
@@ -99,9 +101,9 @@ namespace Gestures
             openDataDialog.InitialDirectory = Path.Combine(Application.StartupPath, "Resources");
             sequence= new List<GestureData>(); //init the GestureData list
             InitKinect(); //initialize Kinect sensor and its various data streams
-            //ttsout = new SpeechSynthesizer(); //init the speech synth object
+            ttsout = new SpeechSynthesizer(); //init the speech synth object
             passableSequence = sequence;
-           // SpeakOut("Hello everyone!");
+            SpeakOut("Hello!");
         }
 
         void InitKinect()
@@ -174,7 +176,7 @@ namespace Gestures
             for (int index = 0; index < data.Count; index++)
             {
                 var hand = data.Hands[index];
-                Console.WriteLine(string.Format("Fingers on hand {0}: {1}", index, hand.FingerCount));
+               // Console.WriteLine(string.Format("Fingers on hand {0}: {1}", index, hand.FingerCount));
                 //HINT : the current contet when running is on a separate thread, need to use begininvoke or a backgroundworker to change the UItext
 
                 //uncomment the following 1 line, and get it working if you can. 
@@ -336,7 +338,7 @@ namespace Gestures
         {
             if (this._kinectDevice != null && this._kinectDevice.DepthStream != null && this._kinectDevice.SkeletonStream != null)
             {
-                //this._kinectDevice.DepthStream.Range = DepthRange.Near; // Depth in near range enabled
+               // this._kinectDevice.DepthStream.Range = DepthRange.Near; // Depth in near range enabled
                 this._kinectDevice.SkeletonStream.EnableTrackingInNearRange = true; // enable returning skeletons while depth is in Near Range
                 this._kinectDevice.SkeletonStream.TrackingMode = SkeletonTrackingMode.Seated; // Use seated tracking
                 System.Diagnostics.Debug.WriteLine("============enabled near mode=============");
@@ -773,7 +775,7 @@ namespace Gestures
 
                 label = database.Classes[index]; //modified
                 lbHaveYouDrawn.Text = String.Format("Have you drawn a {0}?", label);
-                //SpeakOut(label); //speak the label
+                SpeakOut(label); //speak the label
                 
                 panelClassification.Visible = true;
                 panelUserLabeling.Visible = false;
@@ -865,20 +867,20 @@ namespace Gestures
             return passableSequence;
         }
 
-        
-        //private void SpeakOut(String s)
-        //{
-        //    //Speech TTS demo
-        //    //if(null != ttsout)
-        //    //ttsout.Dispose();
-        //    if (ShouldSpeakOut && null != s)
-        //    {
-        //        System.Diagnostics.Debug.WriteLine("Speaking things~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        //        ttsout = new SpeechSynthesizer();
-        //        ttsout.SpeakAsync(s);
-        //        //ttsout.Speak(s);
-        //    }
-        //}
+
+        private void SpeakOut(String s)
+        {
+            //Speech TTS demo
+            if (null != ttsout)
+                ttsout.Dispose();
+            if (ShouldSpeakOut && null != s)
+            {
+                System.Diagnostics.Debug.WriteLine("Speaking things~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                ttsout = new SpeechSynthesizer();
+                ttsout.SpeakAsync(s);
+                
+            }
+        }
 
        
 
