@@ -103,9 +103,8 @@
             this.kinImage = new System.Windows.Forms.PictureBox();
             this.BtnCameraDown = new System.Windows.Forms.Button();
             this.BtnCameraUp = new System.Windows.Forms.Button();
+            this.btnTestbegin = new System.Windows.Forms.Button();
             this.canvas = new Gestures.Canvas();
-            this.handLabel = new System.Windows.Forms.Label();
-            this.fingerLabel = new System.Windows.Forms.Label();
             this.tabSamples.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
@@ -651,17 +650,17 @@
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(225, 21);
             this.btnClear.TabIndex = 27;
-            this.btnClear.Text = "Forget my drawing, clear the screen.";
+            this.btnClear.Text = "Forget this gesture, clear screen.";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // btnInsert
             // 
-            this.btnInsert.Location = new System.Drawing.Point(222, 30);
+            this.btnInsert.Location = new System.Drawing.Point(222, 35);
             this.btnInsert.Name = "btnInsert";
-            this.btnInsert.Size = new System.Drawing.Size(225, 35);
+            this.btnInsert.Size = new System.Drawing.Size(225, 30);
             this.btnInsert.TabIndex = 27;
-            this.btnInsert.Text = "Insert my drawing into the database!";
+            this.btnInsert.Text = "Insert to database";
             this.btnInsert.UseVisualStyleBackColor = true;
             this.btnInsert.Click += new System.EventHandler(this.btnInsert_Click);
             // 
@@ -670,9 +669,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(11, 38);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(71, 21);
+            this.label7.Size = new System.Drawing.Size(45, 21);
             this.label7.TabIndex = 26;
-            this.label7.Text = "I\'ve drawn a";
+            this.label7.Text = "I said ...";
             this.label7.UseCompatibleTextRendering = true;
             // 
             // cbClasses
@@ -690,9 +689,9 @@
             this.lbWhat.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbWhat.Location = new System.Drawing.Point(8, 11);
             this.lbWhat.Name = "lbWhat";
-            this.lbWhat.Size = new System.Drawing.Size(202, 29);
+            this.lbWhat.Size = new System.Drawing.Size(163, 29);
             this.lbWhat.TabIndex = 25;
-            this.lbWhat.Text = "What have you drawn?";
+            this.lbWhat.Text = "What did you say?";
             this.lbWhat.UseCompatibleTextRendering = true;
             // 
             // lbIdle
@@ -748,7 +747,7 @@
             this.lbHaveYouDrawn.Name = "lbHaveYouDrawn";
             this.lbHaveYouDrawn.Size = new System.Drawing.Size(437, 25);
             this.lbHaveYouDrawn.TabIndex = 25;
-            this.lbHaveYouDrawn.Text = "Have you drawn a {Foo} ?";
+            this.lbHaveYouDrawn.Text = "Did you say {Foo} ?";
             this.lbHaveYouDrawn.UseCompatibleTextRendering = true;
             // 
             // menuFile
@@ -829,7 +828,7 @@
             this.btnLearnHMM.Enabled = false;
             this.btnLearnHMM.Location = new System.Drawing.Point(12, 595);
             this.btnLearnHMM.Name = "btnLearnHMM";
-            this.btnLearnHMM.Size = new System.Drawing.Size(144, 40);
+            this.btnLearnHMM.Size = new System.Drawing.Size(171, 40);
             this.btnLearnHMM.TabIndex = 35;
             this.btnLearnHMM.Text = "Create a Hidden Markov Model Classifier";
             this.btnLearnHMM.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
@@ -841,9 +840,9 @@
             // 
             this.btnLearnHCRF.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnLearnHCRF.Enabled = false;
-            this.btnLearnHCRF.Location = new System.Drawing.Point(162, 595);
+            this.btnLearnHCRF.Location = new System.Drawing.Point(189, 595);
             this.btnLearnHCRF.Name = "btnLearnHCRF";
-            this.btnLearnHCRF.Size = new System.Drawing.Size(152, 40);
+            this.btnLearnHCRF.Size = new System.Drawing.Size(162, 40);
             this.btnLearnHCRF.TabIndex = 35;
             this.btnLearnHCRF.Text = "Create a Hidden Conditional Random Field";
             this.btnLearnHCRF.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
@@ -856,7 +855,7 @@
             this.btnRecord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnRecord.Enabled = false;
             this.btnRecord.ForeColor = System.Drawing.Color.Black;
-            this.btnRecord.Location = new System.Drawing.Point(332, 595);
+            this.btnRecord.Location = new System.Drawing.Point(357, 595);
             this.btnRecord.Name = "btnRecord";
             this.btnRecord.Size = new System.Drawing.Size(152, 40);
             this.btnRecord.TabIndex = 37;
@@ -877,7 +876,7 @@
             // 
             this.BtnCameraDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BtnCameraDown.Enabled = false;
-            this.BtnCameraDown.Location = new System.Drawing.Point(516, 617);
+            this.BtnCameraDown.Location = new System.Drawing.Point(280, 606);
             this.BtnCameraDown.Name = "BtnCameraDown";
             this.BtnCameraDown.Size = new System.Drawing.Size(71, 18);
             this.BtnCameraDown.TabIndex = 40;
@@ -890,7 +889,7 @@
             // 
             this.BtnCameraUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BtnCameraUp.Enabled = false;
-            this.BtnCameraUp.Location = new System.Drawing.Point(516, 595);
+            this.BtnCameraUp.Location = new System.Drawing.Point(189, 606);
             this.BtnCameraUp.Name = "BtnCameraUp";
             this.BtnCameraUp.Size = new System.Drawing.Size(71, 18);
             this.BtnCameraUp.TabIndex = 41;
@@ -898,6 +897,20 @@
             this.BtnCameraUp.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.BtnCameraUp.UseCompatibleTextRendering = true;
             this.BtnCameraUp.UseVisualStyleBackColor = true;
+            // 
+            // btnTestbegin
+            // 
+            this.btnTestbegin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnTestbegin.Enabled = false;
+            this.btnTestbegin.ForeColor = System.Drawing.Color.Black;
+            this.btnTestbegin.Location = new System.Drawing.Point(593, 595);
+            this.btnTestbegin.Name = "btnTestbegin";
+            this.btnTestbegin.Size = new System.Drawing.Size(104, 40);
+            this.btnTestbegin.TabIndex = 44;
+            this.btnTestbegin.Text = "Test!";
+            this.btnTestbegin.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.btnTestbegin.UseCompatibleTextRendering = true;
+            this.btnTestbegin.UseVisualStyleBackColor = true;
             // 
             // canvas
             // 
@@ -912,31 +925,12 @@
             this.canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_MouseDown);
             this.canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.inputCanvas_MouseUp);
             // 
-            // handLabel
-            // 
-            this.handLabel.AutoSize = true;
-            this.handLabel.Location = new System.Drawing.Point(611, 595);
-            this.handLabel.Name = "handLabel";
-            this.handLabel.Size = new System.Drawing.Size(63, 17);
-            this.handLabel.TabIndex = 42;
-            this.handLabel.Text = "Hands : 0";
-            // 
-            // fingerLabel
-            // 
-            this.fingerLabel.AutoSize = true;
-            this.fingerLabel.Location = new System.Drawing.Point(611, 619);
-            this.fingerLabel.Name = "fingerLabel";
-            this.fingerLabel.Size = new System.Drawing.Size(68, 17);
-            this.fingerLabel.TabIndex = 43;
-            this.fingerLabel.Text = "Fingers : 0";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(896, 642);
-            this.Controls.Add(this.fingerLabel);
-            this.Controls.Add(this.handLabel);
+            this.Controls.Add(this.btnTestbegin);
             this.Controls.Add(this.BtnCameraUp);
             this.Controls.Add(this.BtnCameraDown);
             this.Controls.Add(this.kinImage);
@@ -951,7 +945,7 @@
             this.Controls.Add(this.btnLearnHCRF);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.Name = "MainForm";
-            this.Text = "Continuous density Hidden Markov Models for Sequence Recognition";
+            this.Text = "Sign language to Speech Conversion using Kinect";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabSamples.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
@@ -1075,8 +1069,7 @@
         private System.Windows.Forms.PictureBox kinImage;
         private System.Windows.Forms.Button BtnCameraDown;
         private System.Windows.Forms.Button BtnCameraUp;
-        private System.Windows.Forms.Label handLabel;
-        private System.Windows.Forms.Label fingerLabel;
+        private System.Windows.Forms.Button btnTestbegin;
     }
 }
 

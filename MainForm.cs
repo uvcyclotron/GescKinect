@@ -46,6 +46,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;//for Marshal
 
 using System.Speech.Synthesis; //for speech.
+using System.Threading; //for background threads.
 
 //import CCT
 using CCT.NUI.KinectSDK;
@@ -73,8 +74,11 @@ namespace Gestures
         SpeechSynthesizer ttsout; //for Speech synth
         bool ShouldSpeakOut = true;
 
+        //private ViterbiLearning<MultivariateNormalDistribution> vtl;
+
         Boolean flagRecording = false;
         Boolean isGestureOver = false;
+        bool TestingOn = false;
         List<GestureData> sequence;
         static List<GestureData> passableSequence;
 
@@ -89,9 +93,16 @@ namespace Gestures
         private ShapeDataSourceSettings shapeSettings = new ShapeDataSourceSettings();
         private HandDataSourceSettings handDetectionSettings = new HandDataSourceSettings();
 
+        Thread th_restPosCheck; //added.
+        bool isRestPos = false;
+        Skeleton skel;
+
         public MainForm()
         {
             InitializeComponent();
+            th_restPosCheck = new Thread(checkResting);
+            th_restPosCheck.IsBackground = true;
+
 
             database = new Database();
             gridSamples.AutoGenerateColumns = false;
@@ -104,6 +115,11 @@ namespace Gestures
             ttsout = new SpeechSynthesizer(); //init the speech synth object
             passableSequence = sequence;
             SpeakOut("Hello!");
+
+            btnLearnHCRF.Visible = false;
+
+            
+            
         }
 
         void InitKinect()
@@ -131,6 +147,8 @@ namespace Gestures
                     _kinectDevice.Start();
                     skeletonData = new Skeleton[_kinectDevice.SkeletonStream.FrameSkeletonArrayLength];
                     EnableNearModeSkeletalTracking();
+
+                   // restPosCheck.Start(); //start restPos check thread.
                 }
                 catch (IOException)
                 {
@@ -146,6 +164,8 @@ namespace Gestures
                 BtnCameraDown.Enabled = true;
                 BtnCameraUp.Click += new EventHandler(BtnCameraUpClick);
                 BtnCameraDown.Click += new EventHandler(BtnCameraDownClick);
+                btnTestbegin.Enabled = true;
+                btnTestbegin.Click += new EventHandler(Testingbegin_click);
             }
 
             #region CCT code
@@ -157,7 +177,7 @@ namespace Gestures
                 var handDataSource = new HandDataSource(dataSourceFactory.CreateShapeDataSource(this.clusteringSettings, this.shapeSettings), this.handDetectionSettings);
                 handDataSource.NewDataAvailable += new NewDataHandler<HandCollection>(handDataSource_NewDataAvailable);
                 handDataSource.Start();
-                System.Diagnostics.Debug.WriteLine("hand data src started");
+                //System.Diagnostics.Debug.WriteLine("hand data src started");
 
             }
             catch (ArgumentOutOfRangeException exc)
@@ -169,6 +189,12 @@ namespace Gestures
             }
             #endregion
 
+        }
+
+        void Testingbegin_click(object sender, EventArgs e)
+        {
+            flagRecording = true;
+            TestingOn = true;
         }
 
         void handDataSource_NewDataAvailable(HandCollection data)
@@ -188,11 +214,11 @@ namespace Gestures
             }
         }
 
-        void updateHandLabels(int hands, int fingers)
-        {
-            handLabel.Text = "Hands: " + hands.ToString();
-            fingerLabel.Text = "Fingers: " + fingers.ToString();
-        }
+        //void updateHandLabels(int hands, int fingers)
+        //{
+        //    handLabel.Text = "Hands: " + hands.ToString();
+        //    fingerLabel.Text = "Fingers: " + fingers.ToString();
+        //}
 
         private void SkeletonHandler(object sender, SkeletonFrameReadyEventArgs e)
         {
@@ -209,6 +235,9 @@ namespace Gestures
                         if (sk.TrackingState == SkeletonTrackingState.Tracked)
                         {
                             TraceTrackedSkeletonJoints(sk.Joints);
+                            updateSkeletonData(sk);
+                            
+                            //System.Diagnostics.Debug.WriteLine("@@@skel updated@@@~~~");
                         }
                     }
                 }
@@ -216,10 +245,18 @@ namespace Gestures
             }
         }
 
+        void updateSkeletonData(Skeleton s)
+        {
+            if (!th_restPosCheck.IsAlive)
+                th_restPosCheck.Start();
+
+            this.skel = s;
+        }
+
         void TraceTrackedSkeletonJoints(JointCollection jCollection)
         {
             Point3D shl, shr, elbl, elbr, wrstl, wrstr, handl, handr, spine, head;
-            if (flagRecording && frameCount >= 3)
+            if (flagRecording && frameCount >= 6)
             {
 
                 //add check if jointdata is non null
@@ -340,7 +377,7 @@ namespace Gestures
             {
                // this._kinectDevice.DepthStream.Range = DepthRange.Near; // Depth in near range enabled
                 this._kinectDevice.SkeletonStream.EnableTrackingInNearRange = true; // enable returning skeletons while depth is in Near Range
-                this._kinectDevice.SkeletonStream.TrackingMode = SkeletonTrackingMode.Seated; // Use seated tracking
+                //this._kinectDevice.SkeletonStream.TrackingMode = SkeletonTrackingMode.Seated; // Use seated tracking
                 System.Diagnostics.Debug.WriteLine("============enabled near mode=============");
             }
         }
@@ -476,15 +513,17 @@ namespace Gestures
                 outputs[i] = samples[i].Output;
             }
 
-            int states = 5;//def:5,should change this.
+            int states = 4;//def:5,should change this.
             int iterations = 0;
-            double tolerance = 0.01; //reqd to change?
+            double tolerance = 0.001; //reqd to change?
             bool rejection = false;
 
 
             hmm = new HiddenMarkovClassifier<MultivariateNormalDistribution>(classes.Count,
-                new Forward(states), new MultivariateNormalDistribution(12) , classes.ToArray()); //!UPDATE!, no of dimension/features2 stand for?, and forward states?
+                new Forward(states), new MultivariateNormalDistribution(16) , classes.ToArray()); //!UPDATE!, no of dimension/features2 stand for?, and forward states?
+            //vtl = new ViterbiLearning<MultivariateNormalDistribution>(
 
+                
 
             // Create the learning algorithm for the ensemble classifier
             var teacher = new HiddenMarkovClassifierLearning<MultivariateNormalDistribution>(hmm,
@@ -515,6 +554,7 @@ namespace Gestures
             foreach (var sample in database.Samples)
             {
                 sample.RecognizedAs = hmm.Compute(sample.Input);
+                
             }
 
             foreach (DataGridViewRow row in gridSamples.Rows)
@@ -526,6 +566,8 @@ namespace Gestures
 
             btnLearnHCRF.Enabled = true;
         }
+
+
 
         private void btnLearnHCRF_Click(object sender, EventArgs e)
         {
@@ -679,7 +721,7 @@ namespace Gestures
         
         private void add3DGesture()
         {
-            //get Text Lable for the performed gesture
+            //get Text Label for the performed gesture
             string selectedItem = cbClasses.SelectedItem as String;
             string classLabel;
             if (detectionDone)
@@ -737,6 +779,7 @@ namespace Gestures
             {
                 int index = (hcrf != null) ? hcrf.Compute(input) : hmm.Compute(input);
                 string label = database.Classes[index];
+                //int[] path = ;
                 lbHaveYouDrawn.Text = String.Format("Have you painted a {0}?", label);
                 panelClassification.Visible = true;
                 panelUserLabeling.Visible = false;
@@ -774,8 +817,9 @@ namespace Gestures
                     hcrf.Compute(input) : hmm.Compute(input); //check if input is well formed from sequence preprocessing, only xy breakpoint
 
                 label = database.Classes[index]; //modified
-                lbHaveYouDrawn.Text = String.Format("Have you drawn a {0}?", label);
+                lbHaveYouDrawn.Text = String.Format("Did you say: {0}?", label);
                 SpeakOut(label); //speak the label
+
                 
                 panelClassification.Visible = true;
                 panelUserLabeling.Visible = false;
@@ -882,7 +926,77 @@ namespace Gestures
             }
         }
 
-       
+        void checkResting()
+        {
+            int restPosFrames = 0;
+            while (null != _kinectDevice && _kinectDevice.Status == KinectStatus.Connected && _kinectDevice.SkeletonStream.IsEnabled == true && skel !=null)
+            {
+               // System.Diagnostics.Debug.WriteLine(skel.Joints[JointType.HandRight].Position.Y +" "+ skel.Joints[JointType.HipCenter].Position.Y+ " "+ skel.Joints[JointType.HandLeft].Position.Y);
+                //add code for rest pos check.
+                if (skel.Joints[JointType.HandRight].Position.Y < skel.Joints[JointType.HipCenter].Position.Y && skel.Joints[JointType.HandLeft].Position.Y < skel.Joints[JointType.HipCenter].Position.Y)
+                {
+                    if (isRestPos)
+                        continue;
+
+                    if (restPosFrames < 3)
+                    {
+                        restPosFrames++;
+                    }
+                    else
+                    {
+                        isRestPos = true;
+
+                        System.Diagnostics.Debug.Write("Rest pos !! ~~~~~~~~~~");
+
+                        //ops
+                        if (TestingOn)
+                        {
+                            double[][] input = Sequence.Preprocess(Get3DSequence());
+
+                            if (input.Length < 5) //length of input, might incr this because now gestures not screen drawing.
+                            {
+                                System.Diagnostics.Debug.WriteLine("----input gesture was too short---!");
+                                //panelUserLabeling.Visible = false;
+                                //panelClassification.Visible = false;
+                                //return;
+                            }
+
+                            if (hmm == null && hcrf == null)
+                            {
+                                System.Diagnostics.Debug.WriteLine("----hmm not declared---!");
+                                //panelUserLabeling.Visible = true;
+                                //panelClassification.Visible = false;
+                            }
+
+                            else
+                            {
+                                int index = (hcrf != null) ?
+                                    hcrf.Compute(input) : hmm.Compute(input); //check if input is well formed from sequence preprocessing, only xy breakpoint
+
+                                label = database.Classes[index]; //modified
+                                // lbHaveYouDrawn.Text = String.Format("Have you drawn a {0}?", label);
+                                SpeakOut(label); //speak the label
+
+
+                                //  panelClassification.Visible = true;
+                                // panelUserLabeling.Visible = false;
+                            }
+                            sequence.Clear();
+                            
+                        }
+                        restPosFrames = 0;
+
+                    }
+                }
+                else
+                {
+                    isRestPos = false;
+                }
+
+            }
+        }
+
+     
 
 
     }
