@@ -22,3 +22,5 @@ C:\Users\Utkarsh\Desktop\HMMtest\bin\Debug\CCT.NUI.KinectSDK.dll
 C:\Users\Utkarsh\Desktop\HMMtest\bin\Debug\CCT.NUI.Visual.dll
 C:\Users\Utkarsh\Desktop\HMMtest\bin\Debug\OpenNI.Net.dll
 C:\Users\Utkarsh\Desktop\HMMtest\bin\Debug\XnVNITE.net.dll
+D:\Data\APOGEE 2013\APOGEE 2014\KinectG2Sproj\vs work\HMMtest\obj\Debug\Gestures.exe
+D:\Data\APOGEE 2013\APOGEE 2014\KinectG2Sproj\vs work\HMMtest\obj\Debug\Gestures.pdb
